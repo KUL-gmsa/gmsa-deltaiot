@@ -42,11 +42,11 @@ For the other options, you need at least a Java SDK version 12 or higher.
 
 Eclipse will compile the project using Maven.
 
-If you You can install [Spring Tools Suite](https://spring.io/tools).
-
-Alternatively, if you want to add the Spring tools to an existing Eclipse installation, you can add "Spring Tools 4 - For Spring Boot" from the Eclipse Marketplace.
+If you want, you can install [Spring Tools Suite](https://spring.io/tools) or add the Spring tools to an existing Eclipse installation by installing "Spring Tools 4 - For Spring Boot" from the Eclipse Marketplace. This is not necessary to view or compile the source code, but enables some additional development support. 
 
 ## Using Docker
+
+In the root folder of the project, run 
 
 `docker build -t gmsa-deltaiot .`
 
@@ -66,7 +66,7 @@ From the root folder of the project, run the Maven wrapper script:
 
 # Running
 
-The application starts a Tomcat server on your local machine, port 8080.
+The application starts an embedded Tomcat server on your local machine, port 8080.
 You can browse to the application via [http://localhost:8080](http://localhost:8080).
 
 ## From Eclipse
