@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div class="page-header" th:fragment="header (currentUser)">
+		<h1 class="text-center">My DeltaIoT++ profile</h1>
+		<nav>
+			<a class="btn btn-secondary btn-sm float-right ml-3"
+				th:href="@{/logout}">Logout</a>
+			<div class="float-right">
+				You are logged in as <strong th:utext="${currentUser}"></strong>
+			</div>
+		</nav>
+	</div>
+
+	<div class="card my-5" th:fragment="account_info (account)">
+		<h2 class="card-header">My account info</h2>
+		<ul class="list-group">
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-3 text-right mr-2">Username</div>
+					<div class="col-*">
+						<code th:text="${account.username}"></code>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-3 text-right mr-2">E-mail</div>
+					<div class="col-*">
+						<code th:text="${account.email}"></code>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-3 text-right mr-2">API token</div>
+					<div class="col-*">
+						<code id="token" th:text="${account.apiToken}"></code> <a
+							id="refreshToken" role="button"
+							class="btn btn-danger btn-sm ml-3" href="#">Refresh</a>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-3 text-right mr-2">Hardware access granted</div>
+					<div class="col-*">
+						<code th:text="${account.isPendingAuthorization()} ? 'PENDING' : (${account.hardwareAuthorized}? 'YES' : 'NO')"></code>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+
+	<script th:fragment="account_info_script" th:inline="javascript">
+		$('#refreshToken').click(function() {
+			let token = $('#token').text();
+			let url = /*[[${T(be.kuleuven.cs.distrinet.gmsa.deltaiot.api.v1.AccountRESTController).PATH}]]*/ 
+			        + '/'
+					+ /*[[${account.username}]]*/ 
+					+ '/refreshToken'; 
+			$.post({url: url, headers: {token: token }}, function(data) {
+				$('#token').text(data);
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Your profile</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/bs/css/bootstrap.min.css">
+<link rel="stylesheet" href="/fa/css/all.min.css">
+<style type="text/css">
+body {
+	background: #f5f5f5;
+}
+
+#main {
+	background: white;
+	padding-bottom: 20px;
+}
+
+[data-toggle="collapse"] .fa:after {
+	content: "\f146";
+}
+
+[data-toggle="collapse"].collapsed .fa:after {
+	content: "\f0fe";
+}
+
+var {
+	color: var(--primary);
+}
+</style>
+</head>
+<body>
+	<div id="main" class="container">
+		<div th:replace="fragments/account_info :: header(${currentUser})"></div>
+
+		<div
+			th:replace="fragments/flash :: flash(info=${info}, error=${error})"></div>
+
+		<div
+			th:replace="fragments/account_info :: account_info(account=${account})"></div>
+
+		<div class="card w-100 my-5">
+			<h2 class="card-header">Uploaded adaptation models</h2>
+			<div class="card-body py-1"><small class="text-muted">Uploading models happens through the REST API</small></div>
+			<div class="list-group" th:each="model : ${models}">
+				<button
+					class="btn btn-outline-secondary btn-block btn-sm text-left collapsed mt-1"
+					data-toggle="collapse" th:data-target="'#model' + ${model.id}"
+					th:inline="text">
+					<span class="fa"></span> [[${model.name}]] ([[${model.id}]])
+				</button>
+				<div class="collapse" th:id="'model' + ${model.id}">
+					<div class="card-body" th:inline="text">
+						Implemented by class <code>[[${model.className}]]</code> in <code>[[${model.filename}]]</code>
+						<h5>Source code</h5>
+						<pre><code th:text="${model.code}"></code></pre>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card w-100 my-5">
+			<h2 class="card-header">Hardware benchmarks</h2>
+			<div class="card-body py-1"><small class="text-muted">Starting new benchmarks happens through the REST API</small></div>
+			<div class="list-group" th:each="bm : ${benchmarks}">
+				<button class="btn btn-block btn-sm text-left collapsed mt-1"
+					th:classappend="${bm.startedAt} == null? 'btn-secondary' : (${bm.success}? 'btn-success' : 'btn-danger')"
+					data-toggle="collapse" th:data-target="'#bm' + ${bm.id}"
+					th:inline="text">
+					<div class="d-flex w-100 justify-content-between">
+						<div><span class="fa"></span> [[${bm.id}]]</div>
+						<small th:text="${bm.startedAt} != null ? ${bm.friendlyAge} : 'pending'"></small>
+					</div>
+
+				</button>
+				<div class="collapse" th:id="'bm' + ${bm.id}">
+					<div class="card-body" th:inline="text">
+						Benchmark for model <a
+							th:href="'#model' + ${bm.adaptationModelId}">[[${bm.adaptationModelId}]]</a>
+						[[${bm.startedAt} != null? ' started at ' + ${bm.startedAt} :
+						'']]
+						<h5>Result</h5>
+						<span
+							th:text="${bm.startedAt} == null? 'PENDING' : (${bm.success}? 'SUCCESS' : 'FAILURE')"></span>
+						<pre><code th:text="${bm.result}"></code></pre>
+						</th:block>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<th:block th:replace="fragments/api_doc :: api_doc"></th:block>
+
+	</div>
+
+	<th:block th:replace="fragments/footer :: footer_scripts"></th:block>
+	<th:block th:replace="fragments/account_info :: account_info_script"></th:block>
+</body>
+</html>

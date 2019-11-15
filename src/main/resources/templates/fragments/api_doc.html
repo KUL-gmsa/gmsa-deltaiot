@@ -1,0 +1,305 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div class="card w-100 my-5" th:fragment="api_doc">
+		<h2 class="card-header">REST API Documentation</h2>
+		<div class="list-group">
+			<div class="list-group-item list-group-item-primary py-0">
+				General information</div>
+			<div class="list-group-item">
+				<p>
+					To perform a REST API call marked with <span
+						class="badge badge-success">token</span>, you must provide your
+					API token in a HTTP header named <code
+						th:text="${T(be.kuleuven.cs.distrinet.gmsa.deltaiot.api.v1.AbstractBaseRESTController).TOKEN_HEADER_NAME}"></code>.
+				</p>
+				<p>
+					To perform a REST API call marked with <span
+						class="badge badge-danger">admin</span>, the provided API token
+					must belong to an administrator.
+				</p>
+			</div>
+
+
+			<div class="list-group-item list-group-item-primary py-0">
+				Accounts</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/account</code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-danger">admin</span> List all accounts
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/account/<var>username</var></code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Get the account
+							info of <code><var>username</var></code>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-1">
+							<code>PUT</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Update the account
+							info of <code><var>username</var></code>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/account/<var>username</var>/availability
+					</code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							Return whether
+							<var>username</var>
+							is available for use
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/account/<var>username</var>/refreshToken
+					</code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>POST</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Generate a new API
+							token for <code><var>username</var></code>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/account/<var>username</var>/hardware
+					</code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Check whether <code><var>username</var></code>
+							has access to the hardware infrastructure
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-1">
+							<code>POST</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-danger">admin</span> Grant access to the
+							hardware infrastructure for <code><var>username</var></code>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-1">
+							<code>DELETE</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-danger">admin</span> Revoke access to
+							the hardware infrastructure for <code><var>username</var></code>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/account/<var>username</var>/admin
+					</code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Check whether <code><var>username</var></code>
+							has admin rights
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-1">
+							<code>POST</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-danger">admin</span> Grant administrator
+							rights for <code><var>username</var></code>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-1">
+							<code>DELETE</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-danger">admin</span> Remove
+							administrator rights for <code><var>username</var></code>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/account/pending</code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-danger">admin</span> List all accounts
+							with a pending approval request
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="list-group-item list-group-item-primary py-0">
+				Adaptation models</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/adaptationmodel</code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> List all
+							adaptation models for the current API user (or all for admin)
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-1">
+							<code>POST</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Upload a new
+							adaptation model for the current API user
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/adaptationmodel/<var>id</var></code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Get the current
+							API user's adaptation model with the given <code><var>id</var></code>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-1">
+							<code>PUT</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Update the current
+							API user's adaptation model with the given <code><var>id</var></code>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-1">
+							<code>DELETE</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Delete the current
+							API user's adaptation model with the given <code><var>id</var></code>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="list-group-item list-group-item-primary py-0">
+				Benchmarking</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/benchmark</code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> List all benchmark
+							results for the current API user (or all for admin)
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/benchmark/<var>id</var></code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>GET</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Get the current
+							API user's benchmark results with the given <code><var>id</var></code>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-group-item">
+				<div>
+					<code>/api/v1/benchmark/new/<var>modelID</var></code>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-1">
+							<code>POST</code>
+						</div>
+						<div class="col-*">
+							<span class="badge badge-success">token</span> Submit a new
+							benchmark request for the given <code><var>modelID</var></code>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

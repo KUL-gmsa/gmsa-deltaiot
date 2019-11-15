@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Your profile</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/bs/css/bootstrap.min.css">
+<link rel="stylesheet" href="/fa/css/all.min.css">
+<style type="text/css">
+body {
+	background: #f5f5f5;
+}
+
+#main {
+	background: white;
+	padding-bottom: 20px;
+}
+
+[data-toggle="collapse"] .fa:after {
+	content: "\f146";
+}
+
+[data-toggle="collapse"].collapsed .fa:after {
+	content: "\f0fe";
+}
+
+var {
+	color: var(- -primary);
+}
+</style>
+</head>
+<body>
+	<div id="main" class="container">
+		<div th:replace="fragments/account_info :: header(${currentUser})"></div>
+
+		<div
+			th:replace="fragments/flash :: flash(info=${info}, error=${error})"></div>
+
+		<div
+			th:replace="fragments/account_info :: account_info(account=${account})"></div>
+
+		<div class="card my-5">
+			<h2 class="card-header">Pending requests for hardware access</h2>
+			<ul class="list-group " th:each="acct : ${pendingAccounts}">
+				<li class="list-group-item d-flex">
+					<div class="flex-grow-1">
+						<span th:text="${acct.username}"></span> <a
+							th:href="'mailto:' + ${acct.email}" th:text="${acct.email}"></a>
+					</div>
+					<button class="approve-acct-btn btn btn-primary btn-sm mx-1"
+						th:data-username="${acct.username}">Approve</button>
+					<button class="deny-acct-btn btn btn-danger btn-sm mx-1"
+						th:data-username="${acct.username}">Deny</button>
+				</li>
+			</ul>
+			<div class="card-body" th:if="${pendingAccounts.empty}">No
+				pending requests.</div>
+		</div>
+
+		<div class="card my-5">
+			<h2 class="card-header">Manage administrator rights</h2>
+			<ul class="list-group">
+				<li class="list-group-item"><button
+						class="btn btn-primary btn-sm" id="loadusers">Load users</button></li>
+			</ul>
+		</div>
+
+		<div class="card w-100 my-5">
+			<h2 class="card-header">All hardware benchmarks</h2>
+			<div class="list-group" th:each="bm : ${benchmarks}">
+				<button class="btn btn-block btn-sm text-left collapsed"
+					th:classappend="${bm.startedAt} == null? 'btn-secondary' : (${bm.success}? 'btn-success' : 'btn-danger')"
+					data-toggle="collapse" th:data-target="'#bm' + ${bm.id}"
+					th:inline="text">
+					<div class="d-flex w-100 justify-content-between">
+						<div>
+							<span class="fa"></span> [[${bm.id}]]
+						</div>
+						<small
+							th:text="${bm.startedAt} != null ? ${bm.friendlyAge} : 'pending'"></small>
+					</div>
+
+				</button>
+				<div class="collapse" th:id="'bm' + ${bm.id}">
+					<div class="card-body" th:inline="text">
+						Benchmark for model [[${bm.adaptationModelId}]] [[${bm.startedAt}
+						!= null? ' started at ' + ${bm.startedAt} : '']]
+						<h5>Result</h5>
+						<span
+							th:text="${bm.startedAt} == null? 'PENDING' : (${bm.success}? 'SUCCESS' : 'FAILURE')"></span>
+						<pre><code th:text="${bm.result}"></code></pre>
+						</th:block>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<th:block th:replace="fragments/api_doc :: api_doc"></th:block>
+
+	</div>
+
+	<th:block th:replace="fragments/footer :: footer_scripts"></th:block>
+	<th:block th:replace="fragments/account_info :: account_info_script"></th:block>
+	<script th:inline="javascript">
+	$('.approve-acct-btn').click(function() {
+		let self = this;
+		let username = self.getAttribute('data-username');
+		let token = $('#token').text();
+		let url = /*[[${T(be.kuleuven.cs.distrinet.gmsa.deltaiot.api.v1.AccountRESTController).PATH}]]*/ 
+		        + '/'
+				+ username 
+				+ '/hardware'; 
+		$.post({url: url, headers: {'DeltaIoT-Token': token }}).done(function(data) {
+			let parent = $(self).parent();
+			if (parent.siblings().length == 0) {
+				parent.parent().parent().append('<div class="card-body">No pending requests.</div>');
+			}
+			parent.remove();
+		
+		});
+	});
+	
+	$('.deny-acct-btn').click(function() {
+		let self = this;
+		let username = self.getAttribute('data-username');
+		let token = $('#token').text();
+		let url = /*[[${T(be.kuleuven.cs.distrinet.gmsa.deltaiot.api.v1.AccountRESTController).PATH}]]*/ 
+		        + '/'
+				+ username 
+				+ '/hardware'; 
+		$.ajax({method: 'delete', url: url, headers: {'DeltaIoT-Token': token }}).done(function(data) {
+			$(self).parent().hide();
+		});
+	});
+	
+	$('#loadusers').click(function() {
+		let self = this;
+		let token = $('#token').text();
+		let url = /*[[${T(be.kuleuven.cs.distrinet.gmsa.deltaiot.api.v1.AccountRESTController).PATH}]]*/;
+		$.get({url: url, headers: {'DeltaIoT-Token': token}}).done(function(users) {
+			let list = $(self).parent().parent();
+			$(self).parent().hide();
+			users.forEach(user => {
+				list.append(`<li class="list-group-item d-flex">
+				              <div class="flex-grow-1">${user.username} (${user.email})</div>
+				              <button data-username="${user.username}" class="mx-1 approve-admin-btn btn btn-primary btn-sm"} ${user.admin ? 'style="display:none;"' : ''}>Grant administrator rights</button>
+						      <button data-username="${user.username}" class="mx-1 deny-admin-btn btn btn-danger btn-sm"} ${!user.admin ? 'style="display:none;"' : ''}>Revoke administrator rights</button>
+						    </li>`);
+			});	
+			$('.approve-admin-btn').click(function() {
+				let self = this;
+				let username = self.getAttribute('data-username');
+				$.ajax({method: 'post', url: `${url}/${username}/admin`, headers: {'DeltaIoT-Token': token }}).done(function(data) {
+					$(self).siblings('.deny-admin-btn').show();
+					$(self).hide();
+				});
+			});
+			$('.deny-admin-btn').click(function() {
+				let self = this;
+				let username = self.getAttribute('data-username');
+				$.ajax({method: 'delete', url: `${url}/${username}/admin`, headers: {'DeltaIoT-Token': token }}).done(function(data) {
+					$(self).siblings('.approve-admin-btn').show();
+					$(self).hide();
+				});
+			});
+		});
+	});
+	</script>
+</body>
+</html>
