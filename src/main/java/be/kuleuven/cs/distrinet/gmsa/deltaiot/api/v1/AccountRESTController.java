@@ -44,7 +44,7 @@ public class AccountRESTController extends AbstractBaseRESTController {
     }
 
     @PutMapping("{username}")
-    public Account updateAccountInfo(@RequestBody Account updatedAccountInformation, @PathVariable String pathUsername, @RequestHeader(TOKEN_HEADER_NAME) String token) {
+    public Account updateAccountInfo(@RequestBody Account updatedAccountInformation, @PathVariable("username") String pathUsername, @RequestHeader(TOKEN_HEADER_NAME) String token) {
     	var accountFromToken = validateApiToken(token);
     	if (!accountFromToken.isAdmin() && !accountFromToken.getUsername().contentEquals(pathUsername)) {
     		throw new UnauthorizedException("Can only update own account");
