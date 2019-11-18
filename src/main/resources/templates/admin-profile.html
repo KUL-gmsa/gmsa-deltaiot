@@ -113,7 +113,7 @@ var {
 		        + '/'
 				+ username 
 				+ '/hardware'; 
-		$.post({url: url, headers: {'DeltaIoT-Token': token }}).done(function(data) {
+		$.ajax({method: 'put', url: url, headers: {'DeltaIoT-Token': token }}).done(function(data) {
 			let parent = $(self).parent();
 			if (parent.siblings().length == 0) {
 				parent.parent().parent().append('<div class="card-body">No pending requests.</div>');
@@ -153,7 +153,7 @@ var {
 			$('.approve-admin-btn').click(function() {
 				let self = this;
 				let username = self.getAttribute('data-username');
-				$.ajax({method: 'post', url: `${url}/${username}/admin`, headers: {'DeltaIoT-Token': token }}).done(function(data) {
+				$.ajax({method: 'put', url: `${url}/${username}/admin`, headers: {'DeltaIoT-Token': token }}).done(function(data) {
 					$(self).siblings('.deny-admin-btn').show();
 					$(self).hide();
 				});

@@ -71,7 +71,7 @@ public class AccountRESTController extends AbstractBaseRESTController {
     	return Boolean.toString(accountService.checkAuthorization(username));
     }
     
-    @PostMapping("{username}/hardware")
+    @PutMapping("{username}/hardware")
     public Account addHardwareAuthorization(@PathVariable String username, @RequestHeader(TOKEN_HEADER_NAME) String adminToken) {
     	validateAdminApiToken(adminToken);
     	return accountService.addHardwareAuthorization(username);
@@ -93,7 +93,7 @@ public class AccountRESTController extends AbstractBaseRESTController {
     	throw new NotFoundException("No user with username " + username);
     }
 
-	@PostMapping("{username}/admin")
+	@PutMapping("{username}/admin")
     public Account makeAdmin(@PathVariable String username, @RequestHeader(TOKEN_HEADER_NAME) String adminToken) {
     	validateAdminApiToken(adminToken);
     	return accountService.makeAdmin(username, true);

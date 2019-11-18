@@ -61,7 +61,7 @@ public class AdaptationModelRESTController extends AbstractBaseRESTController {
 	}
 	
 	@PutMapping("{id}")
-	public AdaptationModel updateModel(@RequestHeader(TOKEN_HEADER_NAME) String token, @PathVariable int pathId, @RequestBody AdaptationModel model) {
+	public AdaptationModel updateModel(@RequestHeader(TOKEN_HEADER_NAME) String token, @PathVariable("id") int pathId, @RequestBody AdaptationModel model) {
 		validateApiToken(token);
 		model.setId(pathId);
 		return modelService.updateModel(model);
