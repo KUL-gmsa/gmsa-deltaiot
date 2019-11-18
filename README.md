@@ -1,3 +1,8 @@
+# Important disclaimer
+
+Be aware that this application is **intentionally insecure**, and does not follow best coding practices at all.
+
+
 # Quick run with Docker
 
 If you just want to quickly run and explore the application, without downloading and compiling the source, you can use Docker:
