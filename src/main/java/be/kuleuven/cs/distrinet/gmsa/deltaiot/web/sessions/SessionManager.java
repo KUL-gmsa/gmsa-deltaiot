@@ -36,7 +36,7 @@ public class SessionManager  {
 	}
 
 	
-	public static String ENCRYPTION_KEY = "@SUP3RS3CRE73NCRYP710NK3Y";
+	public static final String ENCRYPTION_KEY = "@SUP3RS3CRE73NCRYP710NK3Y";
 	
 	
 	
