@@ -43,8 +43,9 @@ var {
 
 		<div class="card my-5">
 			<h2 class="card-header">Pending requests for hardware access</h2>
-			<ul class="list-group " th:each="acct : ${pendingAccounts}">
-				<li class="list-group-item d-flex">
+			<ul class="list-group ">
+				<li class="list-group-item d-flex"
+					th:each="acct : ${pendingAccounts}">
 					<div class="flex-grow-1">
 						<span th:text="${acct.username}"></span> <a
 							th:href="'mailto:' + ${acct.email}" th:text="${acct.email}"></a>
