@@ -1,6 +1,7 @@
 package be.kuleuven.cs.distrinet.gmsa.deltaiot.util;
 
-import org.apache.commons.codec.Charsets;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.codec.binary.Base64;
 
 public class Crypto {
@@ -13,11 +14,11 @@ public class Crypto {
 			zipped += text.charAt(i % n1);
 			zipped += key.charAt(i % n2);
 		}
-		return Base64.encodeBase64String(zipped.getBytes(Charsets.UTF_8));
+		return Base64.encodeBase64String(zipped.getBytes(StandardCharsets.UTF_8));
 	}
 	
 	public static String decrypt(String ciphertext, String key) {
-		String decoded = new String(Base64.decodeBase64(ciphertext), Charsets.UTF_8);
+		String decoded = new String(Base64.decodeBase64(ciphertext), StandardCharsets.UTF_8);
 		String plain = "";
 		for (int i = 0; i < decoded.length(); i++) {
 			if (i % 2 == 0) {

@@ -103,7 +103,7 @@ Select Server in be.kuleuven.cs.distrinet.gmsa.deltaiot, right-click and choose 
 
 This requires the project to be built and packaged into a JAR file (see before).
 
-`java -jar target/GMSA-DeltaIoT-Server-0.0.1-SNAPSHOT.jar`
+`mvn spring-boot:run`
 
 ## Using Docker
 

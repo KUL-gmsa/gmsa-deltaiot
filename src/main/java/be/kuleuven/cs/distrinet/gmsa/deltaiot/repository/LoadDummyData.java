@@ -1,15 +1,18 @@
 package be.kuleuven.cs.distrinet.gmsa.deltaiot.repository;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.Duration;
 import java.time.Instant;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.ClassPathResource;
+
+import com.google.common.io.CharStreams;
 
 import be.kuleuven.cs.distrinet.gmsa.deltaiot.infrastructure.BenchmarkRunner;
 import be.kuleuven.cs.distrinet.gmsa.deltaiot.model.Account;
@@ -39,9 +42,6 @@ class LoadDummyData {
 		};
 	}
 	
-	@Autowired
-	private ResourceLoader resourceLoader;
-	
 	@Bean
 	CommandLineRunner initModelDatabase(ModelRepository repository, HWBenchmarkRepository benchmarks) {
 		return args -> {
@@ -50,7 +50,7 @@ class LoadDummyData {
 			model.setName("John's first adaptation model");
 			model.setClassname("john.FirstStrategy");
 			model.setFilename("john/FirstStrategy.java");
-			model.setCode(Files.readString(Paths.get(resourceLoader.getResource("classpath:" + model.getFilename()).getURI())));
+			model.setCode(loadResource(model.getFilename()));
 			model = repository.save(model);
 			log.info("Preloading " + model);
 						
@@ -79,7 +79,7 @@ class LoadDummyData {
 			model.setName("John's second adaptation model");
 			model.setClassname("john.SecondStrategy");
 			model.setFilename("john/SecondStrategy.java");
-			model.setCode(Files.readString(Paths.get(resourceLoader.getResource("classpath:" + model.getFilename()).getURI())));
+			model.setCode(loadResource(model.getFilename()));
 			model = repository.save(model);
 			log.info("Preloading " + model);
 
@@ -102,7 +102,7 @@ class LoadDummyData {
 			model.setName("Mary's first adaptation model");
 			model.setClassname("mary.FirstStrategy");
 			model.setFilename("mary/FirstStrategy.java");
-			model.setCode(Files.readString(Paths.get(resourceLoader.getResource("classpath:" + model.getFilename()).getURI())));
+			model.setCode(loadResource(model.getFilename()));
 			model = repository.save(model);
 			log.info("Preloading " + model);
 						
@@ -120,5 +120,12 @@ class LoadDummyData {
 			benchmarks.save(sim);
 			log.info("Preloading " + sim);
 		};
+	}
+
+	private String loadResource(String filename) throws IOException {
+		InputStream inputStream = new ClassPathResource(filename).getInputStream();
+	    try (Reader reader = new InputStreamReader(inputStream)) {
+	        return CharStreams.toString(reader);
+	    }
 	}
 }

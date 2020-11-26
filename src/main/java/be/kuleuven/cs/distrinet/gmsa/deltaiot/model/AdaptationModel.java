@@ -86,6 +86,7 @@ public class AdaptationModel {
 		Files.write(sourceFile.toPath(), code.getBytes(StandardCharsets.UTF_8));
 
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+
 		compiler.run(null, null, null, sourceFile.getPath());
 
 		URLClassLoader classLoader = new URLClassLoader(
