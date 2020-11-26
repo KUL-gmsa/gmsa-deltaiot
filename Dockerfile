@@ -1,6 +1,6 @@
 #######################
 # Docker image to BUILD
-FROM openjdk:12-alpine as build
+FROM openjdk:14-alpine as build
 WORKDIR /workspace/app
 
 # copy maven
@@ -19,7 +19,7 @@ RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 ######################################
 # Docker image to RUN (based on build)
-FROM openjdk:12-alpine
+FROM openjdk:14-alpine
 VOLUME /tmp
 # copy files from build
 ARG DEPENDENCY=/workspace/app/target/dependency
