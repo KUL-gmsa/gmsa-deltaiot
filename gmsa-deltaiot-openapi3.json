@@ -475,7 +475,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Model"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Model"
+                  }
                 }
               }
             }
@@ -513,6 +516,123 @@
                 }
               }
             }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      }
+    },
+    "/adaptationmodel/{id}": {
+      "get": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Get the adaptation model with the given `id`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The adaptation model ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The adaptation model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Model"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Update the adaptation model with the given `id`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The adaptation model ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated adaptation model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Model"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The updated adaptation model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Model"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Delete the adaptation model with the given `id`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The adaptation model ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The deletion was successful"
+          },
+          "500": {
+            "description": "Deletion failed"
           }
         },
         "security": [
