@@ -19,6 +19,6 @@ class UnauthorizedAdvice {
 	@ExceptionHandler(UnauthorizedException.class)
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	String unauthorizedHandler(UnauthorizedException ex) {
-		return "The provided token is invalid or does not allow the attempted action.";
+		return "The provided API token is invalid or does not allow the attempted action.";
 	}
 }

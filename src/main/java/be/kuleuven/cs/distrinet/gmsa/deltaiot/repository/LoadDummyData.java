@@ -48,7 +48,7 @@ class LoadDummyData {
 			AdaptationModel model = new AdaptationModel();
 			model.setOwner("john");
 			model.setName("John's first adaptation model");
-			model.setClassname("john.FirstStrategy");
+			model.setClassName("john.FirstStrategy");
 			model.setFilename("john/FirstStrategy.java");
 			model.setCode(loadResource(model.getFilename()));
 			model = repository.save(model);
@@ -77,7 +77,7 @@ class LoadDummyData {
 			model = new AdaptationModel();
 			model.setOwner("john");
 			model.setName("John's second adaptation model");
-			model.setClassname("john.SecondStrategy");
+			model.setClassName("john.SecondStrategy");
 			model.setFilename("john/SecondStrategy.java");
 			model.setCode(loadResource(model.getFilename()));
 			model = repository.save(model);
@@ -100,7 +100,7 @@ class LoadDummyData {
 			model = new AdaptationModel();
 			model.setOwner("mary");
 			model.setName("Mary's first adaptation model");
-			model.setClassname("mary.FirstStrategy");
+			model.setClassName("mary.FirstStrategy");
 			model.setFilename("mary/FirstStrategy.java");
 			model.setCode(loadResource(model.getFilename()));
 			model = repository.save(model);

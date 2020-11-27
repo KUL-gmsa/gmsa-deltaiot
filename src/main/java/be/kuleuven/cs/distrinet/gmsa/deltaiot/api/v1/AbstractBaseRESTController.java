@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import be.kuleuven.cs.distrinet.gmsa.deltaiot.controlleradvice.UnauthorizedException;
@@ -11,6 +12,7 @@ import be.kuleuven.cs.distrinet.gmsa.deltaiot.model.Account;
 import be.kuleuven.cs.distrinet.gmsa.deltaiot.service.AccountService;
 
 @RestController
+@CrossOrigin(origins="*", allowCredentials = "false", allowedHeaders = "*")
 public abstract class AbstractBaseRESTController {
 	
 	public static final String TOKEN_HEADER_NAME = "DeltaIoT-Token";

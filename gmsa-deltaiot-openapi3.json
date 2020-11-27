@@ -1,0 +1,773 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "DeltaIoT++ API",
+    "description": "DeltaIoT++ Application API for GMSA Course",
+    "contact": {
+      "email": "koen.yskout@kuleuven.be"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "admin",
+      "description": "Operations that require a valid access token with administrator rights"
+    },
+    {
+      "name": "token",
+      "description": "Operations that require a valid access token"
+    },
+    {
+      "name": "public",
+      "description": "Operations that do not require an access token"
+    }
+  ],
+  "paths": {
+    "/account": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "List all accounts",
+        "responses": {
+          "200": {
+            "description": "List of accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountInfo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "401": {
+            "description": "Invalid API token or not sufficient access rights"
+          }
+        },
+        "security": [
+          {
+            "adminToken": []
+          }
+        ]
+      }
+    },
+    "/account/{username}": {
+      "get": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Get the account info of `username`",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "401": {
+            "description": "Invalid API token or not sufficient access rights"
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Update the account info of `username`",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated account info",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Invalid API token or not sufficient access rights"
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      }
+    },
+    "/account/{username}/availability": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Return whether `username` is available for use",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/account/{username}/refreshToken": {
+      "post": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Generate a new API token for `username`",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The new API token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      }
+    },
+    "/account/{username}/hardware": {
+      "get": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Check whether `username` has access to the hardware infrastructure",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Grant access to the hardware infrastructure for `username`",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated account info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfo"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "adminToken": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Revoke access to the hardware infrastructure for `username`",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated account info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfo"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "adminToken": []
+          }
+        ]
+      }
+    },
+    "/account/{username}/admin": {
+      "get": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Check whether `username` has admin rights",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Grant admin rights to `username`",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated account info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfo"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "adminToken": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Revoke admin rights from `username`",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated account info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfo"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "adminToken": []
+          }
+        ]
+      }
+    },
+    "/account/pending": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "List all accounts with pending approval request",
+        "responses": {
+          "200": {
+            "description": "Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountInfo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "adminToken": []
+          }
+        ]
+      }
+    },
+    "/adaptationmodel": {
+      "get": {
+        "tags": [
+          "token"
+        ],
+        "summary": "List all adaptation models for the current API user (or all for admin)",
+        "responses": {
+          "200": {
+            "description": "List of adaptation models",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Model"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Upload a new adaptation model for the current API user",
+        "requestBody": {
+          "description": "The adaptation model to upload, without ID and owner (will be assigned automatically).",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Model"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "List of adaptation models",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Model"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      }
+    },
+    "/benchmark": {
+      "get": {
+        "tags": [
+          "token"
+        ],
+        "summary": "List all benchmarks for the current API user (or all for admin)",
+        "responses": {
+          "200": {
+            "description": "List of benchmarks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Benchmark"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      }
+    },
+    "/benchmark/{id}": {
+      "get": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Get the current API user's benchmark with the given `id`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Benchmark ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of adaptation models",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Benchmark"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      }
+    },
+    "/benchmark/new/{modelId}": {
+      "post": {
+        "tags": [
+          "token"
+        ],
+        "summary": "Submit a new benchmark request for the given `modelId`",
+        "parameters": [
+          {
+            "name": "modelId",
+            "in": "path",
+            "description": "ID of the adaptation model to run",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The (pending) benchmark information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Benchmark"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "userToken": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountInfo": {
+        "required": [
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "john"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john@example.com"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-11-27T08:14:40.679533Z"
+          },
+          "lastLogin": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-11-27T08:14:40.679533Z"
+          },
+          "hardwareAuthorized": {
+            "type": "boolean",
+            "example": false
+          },
+          "hardwareAuthorizationDecision": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-11-24T08:14:40.679771Z"
+          },
+          "encryptedPassword": {
+            "type": "string",
+            "example": "ajNvTmhDblI="
+          },
+          "apiToken": {
+            "type": "string",
+            "example": "john_d82fcfc817"
+          },
+          "admin": {
+            "type": "boolean",
+            "example": false
+          },
+          "pendingAuthorization": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "Model": {
+        "required": [
+          "name",
+          "owner"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "owner": {
+            "type": "string",
+            "example": "john"
+          },
+          "name": {
+            "type": "string",
+            "example": "John's first adaptation model"
+          },
+          "filename": {
+            "type": "string",
+            "example": "john/FirstStrategy.java"
+          },
+          "code": {
+            "type": "string",
+            "example": "package john;\n\nimport be.kuleuven.cs.distrinet.gmsa.deltaiot.AdaptationAPI;\nimport be.kuleuven.cs.distrinet.gmsa.deltaiot.AdaptationAPI.Effector;\nimport be.kuleuven.cs.distrinet.gmsa.deltaiot.AdaptationAPI.Probe;\n\npublic class FirstStrategy implements AdaptationAPI {\n\n\tpublic FirstStrategy() {\n\t}\n\t\n\t@Override\n\tpublic String run(Probe probe, Effector effector) {\n\t\treturn \"Results from John's first strategy.\";\n\t}\n}\n"
+          },
+          "className": {
+            "type": "string",
+            "example": "john.FirstStrategy"
+          }
+        }
+      },
+      "Benchmark": {
+        "required": [
+          "adaptationModel",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "1ea6d804-6cc7-46a3-9674-c1954b9b2984"
+          },
+          "adaptationModelId": {
+            "type": "number",
+            "description": "The ID of the adaptation model that is used for this benchmark",
+            "example": 1
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-11-26T23:41:51.97807Z"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether the benchmark executed successfully",
+            "example": true
+          },
+          "result": {
+            "type": "string",
+            "description": "The results of the benchmark",
+            "example": "Results from John's first strategy."
+          },
+          "pending": {
+            "type": "boolean",
+            "description": "Whether the benchmark is still pending execution",
+            "example": false
+          }
+        }
+      }
+    },
+    "responses": {
+      "401Unauthorized": {
+        "description": "Invalid API token or not sufficient access rights"
+      }
+    },
+    "securitySchemes": {
+      "adminToken": {
+        "type": "apiKey",
+        "name": "DeltaIoT-Token",
+        "in": "header"
+      },
+      "userToken": {
+        "type": "apiKey",
+        "name": "DeltaIoT-Token",
+        "in": "header"
+      }
+    }
+  }
+}

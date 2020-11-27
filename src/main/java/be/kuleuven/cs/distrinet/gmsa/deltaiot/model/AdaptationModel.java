@@ -75,7 +75,7 @@ public class AdaptationModel {
 		return this.classname;
 	}
 	
-	public void setClassname(String classname) {
+	public void setClassName(String classname) {
 		this.classname = classname;
 	}
 
