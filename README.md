@@ -19,7 +19,7 @@ and point a browser to [http://localhost:8080](http://localhost:8080).
 
 You will need:
 - A recent version of Eclipse (2019-09) or IntelliJ (or your IDE of choice)
-- Java SDK version 12 or higher; OR Docker
+- Java SDK version 11 or higher; OR Docker
 
 
 
@@ -49,12 +49,12 @@ Clone the current repository.
 
 You can compile from within Eclipse, from the command line, or using Docker.
 The Docker option does not require you to install anything else (e.g., Java, Maven) on your system (except Docker itself).
-For the other options, you need at least a Java SDK version 12 or higher.
+For the other options, you need at least a Java SDK version 11 or higher.
 
 ## In Eclipse
 
 Eclipse will compile the project using Maven. You may first have to configure the Java version of the Eclipse project.
-Right-click on the project, select `Build path > Configure Build Path`, and in the Libraries tab, edit the JRE System Library to point to the JavaSE-12 environment.
+Right-click on the project, select `Build path > Configure Build Path`, and in the Libraries tab, edit the JRE System Library to point to the JavaSE-11 environment.
 
 If you want, you can install [Spring Tools Suite](https://spring.io/tools) or add the Spring tools to an existing Eclipse installation by installing "Spring Tools 4 - For Spring Boot" from the Eclipse Marketplace. This is not necessary to view or compile the source code, but enables some additional development support. 
 
@@ -76,9 +76,9 @@ This builds the project in a container using Maven, and prepares a self-containe
 
 From the root folder of the project, run the Maven wrapper script:
 
-`./mvnw package` (on Linux/MacOs)
+`./mvnw -Dmaven.test.skip package` (on Linux/MacOs)
 
-`mvnw.cmd package` (on Windows)
+`mvnw.cmd -Dmaven.test.skip package` (on Windows)
 
 
 
@@ -103,7 +103,7 @@ Select Server in be.kuleuven.cs.distrinet.gmsa.deltaiot, right-click and choose 
 
 This requires the project to be built and packaged into a JAR file (see before).
 
-`mvn spring-boot:run`
+`./mvnw spring-boot:run`
 
 ## Using Docker
 
