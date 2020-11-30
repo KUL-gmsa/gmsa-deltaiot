@@ -1,20 +1,13 @@
 package be.kuleuven.cs.distrinet.gmsa.deltaiot.model;
 
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 
 import be.kuleuven.cs.distrinet.gmsa.deltaiot.AdaptationAPI;
+import be.kuleuven.cs.distrinet.gmsa.deltaiot.util.InMemoryCompiler;
 
 @Entity
 public class AdaptationModel {
@@ -78,23 +71,9 @@ public class AdaptationModel {
 	public void setClassName(String classname) {
 		this.classname = classname;
 	}
-
+	
 	public AdaptationAPI compileAndCreateInstance() throws Exception {
-		String code = this.getCode();
-		File sourceFile = new File("/tmp/compileSimulation/" + this.getFilename());
-		sourceFile.getParentFile().mkdirs();
-		Files.write(sourceFile.toPath(), code.getBytes(StandardCharsets.UTF_8));
-
-		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-
-		compiler.run(null, null, null, sourceFile.getPath());
-
-		URLClassLoader classLoader = new URLClassLoader(
-				new URL[] { new File("/tmp/compileSimulation").toURI().toURL() }, AdaptationAPI.class.getClassLoader());
-		Class<? extends AdaptationAPI> cls = Class.forName(this.getClassName(), true, classLoader)
-				.asSubclass(AdaptationAPI.class);
-		AdaptationAPI instance = cls.getDeclaredConstructor().newInstance();
-		return instance;
+		return InMemoryCompiler.compileAndCreateInstance(this);
 	}
 	
 	
