@@ -53,7 +53,7 @@
             }
           },
           "400": {
-            "description": "bad input parameter"
+            "description": "Invalid request (missing API token?)"
           },
           "401": {
             "description": "Invalid API token or not sufficient access rights"
@@ -96,7 +96,7 @@
             }
           },
           "400": {
-            "description": "bad input parameter"
+            "description": "Invalid request (missing API token?)"
           },
           "401": {
             "description": "Invalid API token or not sufficient access rights"
@@ -140,6 +140,9 @@
           "200": {
             "description": "Success"
           },
+          "400": {
+            "description": "Invalid request (missing API token?)"
+          },
           "401": {
             "description": "Invalid API token or not sufficient access rights"
           }
@@ -179,6 +182,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": []
@@ -206,12 +212,15 @@
           "200": {
             "description": "The new API token",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -249,6 +258,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -284,6 +296,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -319,6 +334,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -331,7 +349,7 @@
     "/account/{username}/admin": {
       "get": {
         "tags": [
-          "token"
+          "admin"
         ],
         "summary": "Check whether `username` has admin rights",
         "parameters": [
@@ -356,11 +374,14 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
           {
-            "userToken": []
+            "adminToken": []
           }
         ]
       },
@@ -391,6 +412,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -426,6 +450,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -454,6 +481,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -482,6 +512,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -516,6 +549,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -554,6 +590,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -601,6 +640,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -631,6 +673,9 @@
           "200": {
             "description": "The deletion was successful"
           },
+          "400": {
+            "description": "Invalid request (missing API token?)"
+          },
           "500": {
             "description": "Deletion failed"
           }
@@ -658,6 +703,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -697,6 +745,12 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
+          },
+          "404": {
+            "description": "No benchmark with given ID"
           }
         },
         "security": [
@@ -735,6 +789,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request (missing API token?)"
           }
         },
         "security": [
@@ -873,6 +930,9 @@
       }
     },
     "responses": {
+      "400InvalidRequest": {
+        "description": "Invalid request (missing API token?)"
+      },
       "401Unauthorized": {
         "description": "Invalid API token or not sufficient access rights"
       }
