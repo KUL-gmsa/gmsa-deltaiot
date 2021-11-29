@@ -1,6 +1,6 @@
 #######################
 # Docker image to BUILD
-FROM openjdk:14-alpine as build
+FROM openjdk:17.0.1-oraclelinux7 as build
 WORKDIR /workspace/app
 
 # copy maven
@@ -19,7 +19,7 @@ RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 ######################################
 # Docker image to RUN (based on build)
-FROM openjdk:14-alpine
+FROM openjdk:17.0.1-oraclelinux7
 VOLUME /tmp
 # copy files from build
 ARG DEPENDENCY=/workspace/app/target/dependency
